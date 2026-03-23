@@ -1,0 +1,32 @@
+{
+  "name": "@l-ubu/qa-toolkit",
+  "version": "1.0.0",
+  "description": "AI-powered QA toolkit — skills, report templates, and Docsify dashboard for automated code quality analysis",
+  "author": "Luca Vandenweghe (L-ubu)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/L-ubu/qa-toolkit.git"
+  },
+  "keywords": [
+    "qa",
+    "quality-assurance",
+    "docsify",
+    "testing",
+    "report",
+    "cursor",
+    "ai-agent",
+    "code-review"
+  ],
+  "bin": {
+    "qa-toolkit": "./bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "skills/",
+    "rules/",
+    "docsify-template/",
+    "install.sh",
+    "README.md"
+  ]
+}

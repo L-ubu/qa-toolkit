@@ -1,0 +1,137 @@
+---
+description: "QA Report Format -- used when producing QA reports, fix lists, Confluence checklists, or Jira ticket content. Apply when running QA skills or when the user asks for a QA run, QA report, or fix list."
+alwaysApply: false
+---
+
+# QA Report Format (iO)
+
+Use this structure whenever you produce QA artifacts for iO (report, fix list, Confluence page, Jira tickets, Docsify dashboard).
+
+## Severity levels
+
+| Level | Label | When to use |
+|-------|--------|-------------|
+| **Critical** | `P0` / Critical | Blocking: security, data loss, broken main flow, legal/a11y blocker |
+| **High** | `P1` / High | Major: wrong behaviour, broken subflow, serious UX or API contract break |
+| **Medium** | `P2` / Medium | Notable: inconsistency, missing edge handling, minor UX/API issue |
+| **Low** | `P3` / Low | Nice-to-fix: polish, minor copy, small improvement |
+
+## Audience classification — IMPORTANT
+
+Every finding MUST be tagged with **audience**:
+
+- **Functional** — The user can see or experience this on the website. Broken buttons, wrong text, missing features, layout bugs, confusing flows, visual issues. Written so a PM or client with zero technical knowledge understands what's wrong.
+- **Technical** — Code-level issue that users don't directly see. Security, architecture, performance, missing endpoint, wrong API contract, code smell, developer-facing. Written for developers.
+
+**Why:** The PM/client needs a separate view to decide priorities based on budget and client impact, without wading through code references. Devs need the technical details. Both views come from the same findings list — the merge agent splits them.
+
+### Rules for classifying
+
+- If a user would notice it on the website (visually or functionally) → **Functional**.
+- If only a developer would find it by reading code → **Technical**.
+- If it's both (e.g. a missing API endpoint that causes a button to silently fail) → **Functional** (because the user experiences the broken button). The technical root cause goes in the technical report.
+- Security issues that don't affect the UI → **Technical**.
+- Accessibility issues (screen reader, keyboard) → **Functional** (users with disabilities experience them).
+- Hardcoded text / missing translations → **Functional** (visible to users in other locales).
+
+## Single finding format
+
+For each finding use:
+
+- **ID:** Short unique id (e.g. `FE-01`, `API-02`, `E2E-03`).
+- **Title:** One line, imperative (e.g. "Fix login button disabled state on error").
+- **Area:** One of `Frontend` | `Backend` | `E2E` | `API` | `Security` | `Other`.
+- **Component (for sorting):** Assign every finding to exactly one bucket so PM and devs can filter:
+  - **Frontend** — design, styling, responsive, layout, a11y, visual/UX (non-logic).
+  - **JS/React** — components, state, client logic, JS/React bugs, form behaviour.
+  - **Backend** — API, server, DB, auth, backend-only.
+  For **JLR MSS** (or when a project has a Confluence QA structure), also use **layer** (React, Symfony, Drupal) and **feature** (My account, Searchbar, Vehicle overview, etc.) — see `.cursor/qa-reference/jlr-qa-structure.md`.
+- **Audience:** `Functional` or `Technical` (see classification rules above).
+- **Severity:** P0–P3 (or Critical/High/Medium/Low).
+- **Steps:** How to reproduce (numbered list or "N/A" for code-level only).
+- **Expected vs actual:** One line each.
+- **Functional description (for functional findings only):** 1–2 sentences in plain language describing what the user sees or experiences. No file paths, no code. This goes into the functional report.
+- **Suggestion:** What to change (file/component/endpoint + concrete fix).
+- **Evidence:** Link to video, screenshot path, or "See recording: …".
+
+## QA Report (main technical artifact)
+
+Structure:
+
+```markdown
+# QA Report — [Project name] — [Date/branch]
+
+## Summary
+- Total findings: N (P0: x, P1: x, P2: x, P3: x)
+- Functional: N · Technical: N
+- Areas: Frontend, Backend, E2E (as applicable)
+
+## Findings
+
+### [Area] — [Finding title] [Px]
+- **ID:** …
+- **Audience:** Functional / Technical
+- **Steps:** …
+- **Expected / Actual:** …
+- **Suggestion:** …
+- **Evidence:** …
+
+(Repeat per finding.)
+
+## Videos / recordings
+- **E2E flow:** [path or URL]
+- **Mobile:** [path or URL]
+- **Tablet:** [path or URL]
+- Per-finding clips: [Title]: path or URL (if any).
+```
+
+## Functional report (PM / Client artifact)
+
+A **separate markdown file** (`qa-functional-report.md`) containing ONLY functional findings, written in **plain language** without code references. Sorted by feature area (for project-specific) or by severity (generic). Each finding has:
+
+- **ID** and **severity badge** (`<span class="badge-p0">P0</span>` / `<span class="badge-p1">P1</span>` / `<span class="badge-p2">P2</span>` / `<span class="badge-p3">P3</span>`)
+- **What happens:** 1–2 sentences describing what the user sees.
+- **Where:** Which page/section/flow.
+- **Impact:** Why this matters for the user.
+- **Screenshots/videos:** Reference if available.
+
+## Functional checklist (PM decision tool)
+
+A **separate markdown file** (`qa-functional-checklist.md`) with checkbox items grouped by **feature area**, so the PM can go through section by section and decide: ✅ Fix / ❌ Won't fix / ⏳ Later / ❓ Discuss. Each item is one line in plain language with the severity badge.
+
+Example:
+```markdown
+## My Account
+- [ ] <span class="badge-p1">P1</span> — When switching language, the "My account" link in the footer stays in English instead of changing to the local language
+- [ ] <span class="badge-p2">P2</span> — After deleting your account, you stay on the account page instead of being redirected to the homepage
+- [ ] <span class="badge-p2">P2</span> — The password show/hide toggle button cannot be reached using the keyboard (Tab key)
+```
+
+## Fix list (for PM → Jira / devs)
+
+**Sort and group by component:** Frontend → JS/React → Backend.
+
+| ID | Title | Severity | Audience | Component | Suggested ticket summary |
+|----|--------|----------|----------|-----------|--------------------------|
+| FE-01 | Fix login button disabled state | P1 | Functional | JS/React | Login button stays disabled after API error |
+| … | … | … | … | … | … |
+
+## Confluence QA checklist
+
+Same as before (see project-specific structure). Add an "Audience" indicator per item (F = Functional, T = Technical) so PM can filter.
+
+## Jira tickets (when creating via MCP)
+
+- Include **audience** as a label: `functional` or `technical`.
+- PM can filter Jira by label `functional` to see only client-facing issues.
+
+## Docsify dashboard
+
+All artifacts are assembled into a Docsify site using the template in `.cursor/qa-docsify-template/`. The merge agent:
+1. Runs `setup-docsify.sh` to scaffold the dashboard.
+2. Copies report markdown files into the output directory.
+3. Fills in `{{PLACEHOLDER}}` values in `README.md`, `media.md`, `qa-functional-report.md`, `qa-functional-checklist.md`.
+4. Adds screenshots and videos to the appropriate directories.
+5. Serves with `npx docsify-cli serve qa-output --port 3333`.
+
+Keep wording clear and actionable so PM and devs can use it without extra explanation.
