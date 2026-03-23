@@ -120,11 +120,11 @@ function help() {
     help                    Show this help
 
   Examples:
-    npx @l-ubu/qa-toolkit init
-    npx @l-ubu/qa-toolkit scaffold "My Project" "feature/branch"
-    npx @l-ubu/qa-toolkit serve
-    npx @l-ubu/qa-toolkit serve 4000
-    npx @l-ubu/qa-toolkit share
+    npx qa-toolkit-ai init
+    npx qa-toolkit-ai scaffold "My Project" "feature/branch"
+    npx qa-toolkit-ai serve
+    npx qa-toolkit-ai serve 4000
+    npx qa-toolkit-ai share
   `);
 }
 

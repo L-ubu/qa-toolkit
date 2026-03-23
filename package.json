@@ -1,5 +1,5 @@
 {
-  "name": "@l-ubu/qa-toolkit",
+  "name": "qa-toolkit-ai",
   "version": "1.0.0",
   "description": "AI-powered QA toolkit — skills, report templates, and Docsify dashboard for automated code quality analysis",
   "author": "Luca Vandenweghe (L-ubu)",

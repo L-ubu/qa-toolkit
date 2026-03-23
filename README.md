@@ -24,7 +24,7 @@ AI-powered QA toolkit that runs automated quality analysis on your codebase and 
 ### Option A: npm (recommended)
 
 ```bash
-npx @l-ubu/qa-toolkit init
+npx qa-toolkit-ai init
 ```
 
 This copies the QA skills, rules, and Docsify template into your project's `.cursor/` directory.
@@ -68,17 +68,17 @@ The agent will:
 
 ```bash
 # Install QA skills into your project
-npx @l-ubu/qa-toolkit init
+npx qa-toolkit-ai init
 
 # Scaffold a new qa-output/ from template
-npx @l-ubu/qa-toolkit scaffold "My Project" "feature/branch"
+npx qa-toolkit-ai scaffold "My Project" "feature/branch"
 
 # Serve the dashboard
-npx @l-ubu/qa-toolkit serve          # default port 3333
-npx @l-ubu/qa-toolkit serve 4000     # custom port
+npx qa-toolkit-ai serve          # default port 3333
+npx qa-toolkit-ai serve 4000     # custom port
 
 # Share via public tunnel
-npx @l-ubu/qa-toolkit share
+npx qa-toolkit-ai share
 ```
 
 ## What you get
